@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberGrid Defense — Cyberpunk Tactical Tower Defense</title>
+  <meta name="description" content="Juego táctico de Tower Defense en Canvas 2D ambientado en un mainframe cyberpunk. Defiende el núcleo central desplegando nodos defensivos contra malware y rootkits.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body>
+
+  <!-- Top Tactical Command Header -->
+  <header class="game-header">
+    <div class="title-group">
+      <h1 class="game-title">CYBERGRID DEFENSE</h1>
+      <span class="terminal-badge">MAINFRAME IDS &bull; v2.0</span>
+    </div>
+
+    <!-- Live Telemetry Stats -->
+    <div class="telemetry-bar">
+      <div class="stat-chip">
+        <span class="stat-label">ANCHO BANDA</span>
+        <span id="hud-bandwidth" class="stat-val bandwidth">350 GB</span>
+      </div>
+      <div class="stat-chip">
+        <span class="stat-label">INTEGRIDAD</span>
+        <span id="hud-integrity" class="stat-val integrity">20/20</span>
+      </div>
+      <div class="stat-chip">
+        <span class="stat-label">INCURSIÓN</span>
+        <span id="hud-wave" class="stat-val">0/15</span>
+      </div>
+      <div class="stat-chip">
+        <span class="stat-label">PUNTAJE</span>
+        <span id="hud-score" class="stat-val">000000</span>
+      </div>
+    </div>
+
+    <!-- Tactical Actions & Simulation Controls -->
+    <div class="header-actions">
+      <select id="sector-select" class="btn-cyber" style="padding: 0.45rem 0.6rem;" aria-label="Seleccionar Sector">
+        <option value="0">Sector 01: Gateway</option>
+        <option value="1">Sector 02: Datacenter</option>
+        <option value="2">Sector 03: Quantum Subnet</option>
+      </select>
+
+      <button type="button" id="btn-speed-1x" class="btn-cyber active" title="Velocidad Normal">1x</button>
+      <button type="button" id="btn-speed-2x" class="btn-cyber" title="Acelerar Simulación">2x</button>
+      <button type="button" id="btn-pause" class="btn-cyber" title="Pausar Bucle de Juego">⏸</button>
+      <button type="button" id="btn-mute" class="btn-cyber" title="Alternar Sonido Sintético">AUDIO: ON</button>
+      <button type="button" id="btn-start-wave" class="btn-cyber btn-wave" title="Lanzar Próxima Oleada de Malware (Espacio)">LANZAR OLEADA</button>
+    </div>
+  </header>
+
+  <!-- Main Battlefield Viewport -->
+  <main class="battlefield-wrapper">
+
+    <!-- Canvas Deck & Live Inspector -->
+    <section class="canvas-deck" aria-label="Matriz de Combate">
+      <!-- 2D Canvas Viewport (800x480) -->
+      <article class="canvas-frame">
+        <canvas id="game-canvas" class="game-canvas" width="800" height="480"></canvas>
+      </article>
+
+      <!-- Tower Details / Inspection Panel -->
+      <aside id="tower-inspector-panel" class="tower-inspector hidden" aria-label="Inspector de Nodos">
+        <div class="inspector-header">
+          <h2 id="inspector-name" class="inspector-title">Bit Laser</h2>
+          <span id="inspector-level" class="inspector-level">NIVEL 1</span>
+        </div>
+
+        <div class="inspector-stats">
+          <div class="stat-row">
+            <span class="label">Potencia de Fuego:</span>
+            <span id="inspector-damage" class="val">18 DPS</span>
+          </div>
+          <div class="stat-row">
+            <span class="label">Radio de Escaneo:</span>
+            <span id="inspector-range" class="val">110 px</span>
+          </div>
+          <div class="stat-row">
+            <span class="label">Cadencia de Ciclo:</span>
+            <span id="inspector-speed" class="val">2.8 /s</span>
+          </div>
+          <div class="stat-row">
+            <span class="label">Amenazas Anuladas:</span>
+            <span id="inspector-kills" class="val">0 eliminados</span>
+          </div>
+          <div class="stat-row" style="align-items: center; margin-top: 0.25rem;">
+            <label for="inspector-target-mode" class="label">Prioridad Target:</label>
+            <select id="inspector-target-mode" class="target-select">
+              <option value="first">Primero</option>
+              <option value="strongest">Más Fuerte</option>
+              <option value="closest">Más Cercano</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inspector-actions">
+          <button type="button" id="inspector-btn-upgrade" class="btn-upgrade">
+            OPTIMIZAR (<span id="inspector-upgrade-cost">85 GB</span>)
+          </button>
+          <button type="button" id="inspector-btn-sell" class="btn-sell">
+            RECICLAR (<span id="inspector-sell-value">+70 GB</span>)
+          </button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Bottom Node Deployment Dock -->
+    <section class="node-dock" aria-label="Despliegue de Nodos Tácticos">
+      <button type="button" class="btn-node-card active" data-type="laser" title="Antivirus de Frecuencia">
+        <span class="node-hotkey">1</span>
+        <span class="node-icon">⚡</span>
+        <span class="node-name">Bit Laser</span>
+        <span class="node-cost">100 GB</span>
+      </button>
+
+      <button type="button" class="btn-node-card" data-type="cipher" title="Subrutina Criptográfica (Ralentizador)">
+        <span class="node-hotkey">2</span>
+        <span class="node-icon">❄️</span>
+        <span class="node-name">Cipher Lock</span>
+        <span class="node-cost">140 GB</span>
+      </button>
+
+      <button type="button" class="btn-node-card" data-type="firewall" title="Muro Térmico de Área Continua">
+        <span class="node-hotkey">3</span>
+        <span class="node-icon">🔥</span>
+        <span class="node-name">Firewall Core</span>
+        <span class="node-cost">180 GB</span>
+      </button>
+
+      <button type="button" class="btn-node-card" data-type="honeypot" title="Pulso EMP de Choque y Área">
+        <span class="node-hotkey">4</span>
+        <span class="node-icon">💥</span>
+        <span class="node-name">Honeypot Decoy</span>
+        <span class="node-cost">220 GB</span>
+      </button>
+
+      <button type="button" class="btn-node-card" data-type="quantum" title="Cañón Railgun Perforador de Armadura">
+        <span class="node-hotkey">5</span>
+        <span class="node-icon">💠</span>
+        <span class="node-name">Quantum Debugger</span>
+        <span class="node-cost">320 GB</span>
+      </button>
+    </section>
+
+  </main>
+
+  <!-- Tactical Notification Toast -->
+  <aside id="tactical-notice" class="tactical-notice" role="status" aria-live="polite">
+    Aviso de seguridad del sistema
+  </aside>
+
+  <!-- Game Over Modal -->
+  <div id="modal-gameover" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="go-title">
+    <div class="modal-content gameover">
+      <h2 id="go-title" class="modal-title">BRECHA DE SISTEMA CRÍTICA</h2>
+      <p class="modal-desc">La integridad del servidor central ha caído a cero. El malware ha comprometido los registros del mainframe.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-cyber btn-restart-game" style="background: var(--neon-pink); color: #fff;">REINICIAR SECTOR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Victory Modal -->
+  <div id="modal-victory" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="vic-title">
+    <div class="modal-content">
+      <h2 id="vic-title" class="modal-title">SECTOR PURGADO CON ÉXITO</h2>
+      <p class="modal-desc">Todas las oleadas de malware e infiltraciones rootkit han sido neutralizadas. El mainframe opera a máxima seguridad.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-cyber btn-next-sector" style="background: var(--neon-cyan); color: #000;">SIGUIENTE SECTOR</button>
+        <button type="button" class="btn-cyber btn-restart-game">REPETIR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="game-footer">
+    <p>CyberGrid Defense &bull; Motor 2D Canvas a 60 FPS &bull; Sintetizador Web Audio API &bull; Codex Portfolio Monorepo</p>
+  </footer>
+
+  <!-- Native Game Engine Script (Self-contained, 100% file:// compatible) -->
+  <script src="js/game.js"></script>
+</body>
+</html>

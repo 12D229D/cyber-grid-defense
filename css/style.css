@@ -1,0 +1,540 @@
+/* ==========================================================================
+   CYBERGRID DEFENSE - STYLESHEET
+   Tactical Cyberpunk Military Terminal / Mainframe Security Interface
+   Vanilla CSS with Custom HSL Palettes, Glassmorphism & Micro-animations
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@600;800;900&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  /* HSL Colors */
+  --bg-deep: hsl(224, 38%, 7%);
+  --bg-panel: hsla(224, 30%, 11%, 0.88);
+  --bg-card: hsla(224, 25%, 15%, 0.8);
+  --bg-card-hover: hsla(224, 25%, 22%, 0.9);
+
+  --neon-cyan: hsl(185, 100%, 50%);
+  --neon-green: hsl(140, 100%, 50%);
+  --neon-pink: hsl(340, 100%, 58%);
+  --neon-amber: hsl(45, 100%, 55%);
+  --neon-purple: hsl(275, 100%, 60%);
+
+  --text-main: hsl(0, 0%, 96%);
+  --text-muted: hsl(224, 15%, 68%);
+  --text-cyan: hsl(185, 100%, 65%);
+  --text-green: hsl(140, 100%, 65%);
+  --text-pink: hsl(340, 100%, 70%);
+
+  /* Glow Effects */
+  --glow-cyan: 0 0 16px hsla(185, 100%, 50%, 0.45);
+  --glow-green: 0 0 16px hsla(140, 100%, 50%, 0.45);
+  --glow-pink: 0 0 18px hsla(340, 100%, 58%, 0.5);
+
+  /* Fonts */
+  --font-display: 'Orbitron', -apple-system, sans-serif;
+  --font-ui: 'Outfit', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: 
+    radial-gradient(circle at 50% 10%, hsla(224, 60%, 16%, 0.4), transparent 50%),
+    radial-gradient(circle at 10% 90%, hsla(185, 80%, 14%, 0.25), transparent 40%),
+    radial-gradient(circle at 90% 85%, hsla(340, 80%, 14%, 0.25), transparent 40%);
+  overflow-x: hidden;
+  line-height: 1.4;
+}
+
+/* Top Tactical Header */
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1.75rem;
+  background: hsla(224, 38%, 9%, 0.92);
+  border-bottom: 2px solid hsla(185, 100%, 50%, 0.4);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.game-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px hsla(185, 100%, 50%, 0.4);
+}
+
+.terminal-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: hsla(140, 100%, 50%, 0.12);
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  letter-spacing: 1px;
+}
+
+/* Header Telemetry Stats */
+.telemetry-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.stat-chip {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid hsla(224, 20%, 30%, 0.6);
+  min-width: 90px;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-val {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+}
+
+.stat-val.integrity {
+  color: var(--neon-green);
+}
+
+.stat-val.bandwidth {
+  color: var(--neon-amber);
+}
+
+/* Header Buttons */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-cyber {
+  background: hsla(224, 28%, 18%, 0.85);
+  color: var(--text-main);
+  border: 1px solid hsla(185, 100%, 50%, 0.6);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.9rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.btn-cyber:hover {
+  background: var(--neon-cyan);
+  color: #000;
+  box-shadow: var(--glow-cyan);
+}
+
+.btn-cyber.active {
+  background: var(--neon-cyan);
+  color: #000;
+  box-shadow: var(--glow-cyan);
+}
+
+.btn-wave {
+  background: hsla(340, 100%, 58%, 0.2);
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+}
+
+.btn-wave:hover:not(:disabled) {
+  background: var(--neon-pink);
+  color: #fff;
+  box-shadow: var(--glow-pink);
+}
+
+.btn-wave:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+}
+
+/* Main Layout */
+.battlefield-wrapper {
+  max-width: 1280px;
+  margin: 1.25rem auto;
+  padding: 0 1.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+/* Battlefield Deck (Canvas + Side Inspector) */
+.canvas-deck {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+@media (max-width: 1100px) {
+  .canvas-deck {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.canvas-frame {
+  background: #060914;
+  border: 2px solid hsla(185, 100%, 50%, 0.4);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(0, 0, 0, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.game-canvas {
+  display: block;
+  cursor: crosshair;
+  background-color: #060914;
+}
+
+/* Tower Inspector Panel */
+.tower-inspector {
+  width: 320px;
+  background: var(--bg-panel);
+  border: 2px solid hsla(185, 100%, 50%, 0.35);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  transition: opacity 0.25s ease;
+}
+
+.tower-inspector.hidden {
+  display: none;
+}
+
+.inspector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid hsla(224, 20%, 30%, 0.6);
+  padding-bottom: 0.6rem;
+}
+
+.inspector-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--neon-cyan);
+}
+
+.inspector-level {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: hsla(45, 100%, 55%, 0.15);
+  border: 1px solid var(--neon-amber);
+  color: var(--neon-amber);
+}
+
+.inspector-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.stat-row .label {
+  color: var(--text-muted);
+}
+
+.stat-row .val {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.target-select {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid hsla(224, 20%, 35%, 0.6);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.inspector-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.btn-upgrade {
+  background: hsla(140, 100%, 50%, 0.15);
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  padding: 0.6rem 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+
+.btn-upgrade:hover {
+  background: var(--neon-green);
+  color: #000;
+  box-shadow: var(--glow-green);
+}
+
+.btn-sell {
+  background: hsla(340, 100%, 58%, 0.15);
+  border: 1px solid var(--neon-pink);
+  color: var(--neon-pink);
+  padding: 0.6rem 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+
+.btn-sell:hover {
+  background: var(--neon-pink);
+  color: #fff;
+  box-shadow: var(--glow-pink);
+}
+
+/* Bottom Tactical Dock (Node Purchase Cards) */
+.node-dock {
+  background: var(--bg-panel);
+  border: 2px solid hsla(224, 25%, 28%, 0.6);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.btn-node-card {
+  background: var(--bg-card);
+  border: 1px solid hsla(224, 20%, 35%, 0.6);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 140px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  outline: none;
+}
+
+.btn-node-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--neon-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.btn-node-card.active {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+  background: hsla(185, 100%, 50%, 0.12);
+}
+
+.node-hotkey {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  background: rgba(0,0,0,0.5);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+
+.node-icon {
+  font-size: 1.4rem;
+  margin-top: 0.25rem;
+}
+
+.node-name {
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.node-cost {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--neon-amber);
+}
+
+/* Tactical Notification Banner */
+.tactical-notice {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: hsla(340, 90%, 15%, 0.95);
+  border: 1px solid var(--neon-pink);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-pink);
+  box-shadow: var(--glow-pink);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.tactical-notice.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Modals (Game Over & Victory) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(4, 6, 14, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-content {
+  background: var(--bg-panel);
+  border: 2px solid var(--neon-cyan);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  text-align: center;
+  max-width: 460px;
+  box-shadow: var(--glow-cyan);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-content.gameover {
+  border-color: var(--neon-pink);
+  box-shadow: var(--glow-pink);
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--neon-cyan);
+}
+
+.modal-content.gameover .modal-title {
+  color: var(--neon-pink);
+}
+
+.modal-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Footer */
+.game-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  border-top: 1px solid hsla(224, 20%, 20%, 0.4);
+}
